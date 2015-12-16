@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Total Form Validation</title>
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+	<link rel="stylesheet" href="fv.css" type="text/css" />
+	<!--[if IE]>
+	<style>
+		.item .tooltip .content{ display:none; opacity:1; }
+		.item .tooltip:hover .content{ display:block; }
+	</style>
+	<![endif]-->
+</head>
+<body>
+	<div id='wrap'>
+		<div class='options'>
+			<label>
+				<input type='checkbox' id='vfields' />
+				Vertical orientation
+			</label>
+			<label>
+				<input type='checkbox' id='alerts' />
+				Disable alerts
+			</label>
+		</div>
+		<h1 title='form name' id="targ0"></h1>
+		<section class='form'>
+			<form action="" method="post" novalidate>
+               <fieldset>
+					<div class="item">
+						<label>
+							<span>firstName</span>
+							<input data-validate-length-range="6" data-validate-words="1" name="firstName" placeholder="First Name" required="required" />
+						</label>
+						<div class='tooltip help'>
+							<span>?</span>
+							<div class='content'>
+								<b></b>
+								<p>Name must be 1 word</p>
+							</div>
+						</div>
+					</div>               	
+               </fieldset>
+				<fieldset>
+					<p>There is a hidden "Required" form field below, notice it will not be validated due to its lack of visibility. The reason for this is that sometimes there is a section in a form that is not visible until some action is taken, but you do not want to change all those fields' "required" attributes on-the-fly, so that is why.</p>
+					<input name="somethingHidden" required="required" type="text" style='display:none' />
+				</fieldset>
+				<button id='send' type='submit' disabled='true'>Submit</button>
+			</form>
+		</section>
+	</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="../../libs/validator/multifield.js"></script>
+    <script src="../../libs/validator/validator.js"></script>
+    <script src="gdry_test1.js"></script>
+    <script src="gdry_main.js"></script>        
+</body>
+</html>
