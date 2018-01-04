@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <% include ../partials/header.ejs %>
+</head>
+
+<body>
+
+  <% include ../partials/nav.ejs %>
+
+<div class="jumbotron text-center">
+  <div class="container">
+    <a href="/" class="lang-logo">
+      <img src="/lang-logo.png">
+    </a>
+    <h1>StarkReef68489</h1>
+    <p>Basic generic app on Heroku.</p>
+  </div>
+</div>
+<div class="container">
+  <div class="alert alert-info text-center" role="alert">
+    To deploy your own copy, and learn the fundamentals of the Heroku platform, head over to the <a href="https://devcenter.heroku.com/articles/getting-started-with-nodejs" class="alert-link">Getting Started with Node on Heroku</a> tutorial.
+  </div>
+  <hr>
+  <div id="app" class="row">
+    <div class="col-md-6">
+      <h3>Bifrost</h3>
+      <div v-show="!fbReady">
+        <h1>loading firebase...</h1>
+      </div>
+      <div v-if="fbReady">
+        <input v-model.trim="newItem.text" placeholder="text..." @keyup.enter="addItem('newItem','todos', newItem)">
+        <button @click="addItem('newItem','todos', newItem)">add</button>
+        <!-- <input v-model.trim="newTodoText" @keyup.enter="addTodo" placeholder="Add new Item"> -->
+        <ul>
+          <li v-for="todo in todos">
+            <span @click="ctxClick(todo, $event)">{{todo.text}}</span>
+            <!-- <input :value="todo.text" @input="updateTodoText(todo, $event.target.value)"> -->
+            <button @click="removeTodo(todo)">X</button>
+          </li>
+        </ul>    
+      </div>
+    </div>
+    <div class="col-md-6">
+      <h3>tsorfiB</h3>
+      <div v-show="!fbReady">
+        <h1>loading firebase...</h1>
+      </div>
+      <div v-if="fbReady">
+        <h3>details - mode:{{detailMode}}</h3>
+        <div v-if="detailMode === 'default'">
+          <p>single click to inspect, double click to edit</p>
+        </div>
+        <div v-if="detailMode === 'inspect'">
+          <h3>inspecting</h3>
+          <ul class="v-for-object">
+            <li v-for="(value, key, index) in inspectItem">
+              -{{ index }}. {{ key }}: {{ value }}
+            </li>
+          </ul>
+        </div>
+        <div v-if="detailMode === 'edit' && editItem">
+          <h3>editing</h3>
+          <input v-model.trim="editItem.text" placeholder="text...">
+          <button @click="updateTodo('fbkey', editItem)">update</button>
+          <ul class="v-for-object">
+            <li v-for="(value, key, index) in editItem">
+              -{{ index }}. {{ key }}: {{ value }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div> 
+  <div class="row">
+    <div class="col-md-6">
+      <h3><span class="glyphicon glyphicon-info-sign"></span> Info</h3>
+      <ul>
+        <li>item 1.</li>
+        <li>item 2.</li>
+        <li>item 3.</li>
+      </ul>
+    </div>
+    <div class="col-md-6">
+      <h3><span class="glyphicon glyphicon-link"></span> Priorities</h3>
+      <ul>
+        <li>Item 1</li>
+        <li>Item 2 with Sub list:</li>
+        <ul>
+          <li><code>heroku git:remote -a &lt;your-app-name></code> - info 1</li>
+          <li><code>heroku git:remote -a &lt;your-app-name></code> - info 2</li>
+          <li><code>heroku git:remote -a &lt;your-app-name></code> - info 3</li>
+        </ul>
+      </ul>
+    </div>
+  </div> <!-- row -->
+</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+    <script src="/scripts/main.js"></script>
+
+</body>
+</html>

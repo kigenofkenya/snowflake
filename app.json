@@ -1,0 +1,8 @@
+{
+  "name": "snowflake-x",
+  "description": "A client facing prototype project",
+  "repository": "https://github.com/kigenofkenya/snowflake",
+  "logo": "https://cdn.rawgit.com/heroku/node-js-getting-started/master/public/node.svg",
+  "keywords": ["node", "express", "heroku"],
+  "image": "heroku/nodejs"
+}

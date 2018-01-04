@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <% include ../partials/header.ejs %>
+</head>
+
+<body>
+  <header>
+    <div id="cd-logo"><a href="#0"><img src="/images/cd-logo_3.svg" alt="Logo"></a></div>
+    <h1><%=title%></h1>
+    <style>
+      table {
+        width:99%;
+      }
+      table tr td.pad-r {
+        padding-right:5px;
+      }
+      table tr td.pad-l {
+        padding-left:5px;
+      }
+      .io-pane {
+        padding-top:3px;
+      }
+      .io-textarea {
+        width:100%;
+        height:136px;
+      }
+      #middiv {
+        height:120px;
+      }
+      #input_output {
+        width:99%;
+        height:99%;
+      }
+      .control-pane {
+        padding-bottom:3px;
+      }
+    </style>
+  </header>
+
+  <div id="cd-nav">
+    <a href="#0" class="cd-nav-trigger">Menu<span></span></a>
+
+    <nav id="cd-main-nav">
+      <ul>
+        <li><a href="#0">Homepage</a></li>
+        <li><a href="#0">Services</a></li>
+        <li><a href="#0">Portfolio</a></li>
+        <li><a href="#0">Pricing</a></li>
+        <li><a href="#0">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <main>
+  <div id="app" class="cd-container">
+<h2 class="flexresponsible-header">BiFrost</h2>
+<div class="flexresponsible-wrap">
+  <div class="row">
+    <div class="col-6">
+      <div v-show="!fbReady">
+        <h1>loading firebase...</h1>
+      </div>
+      <div v-if="fbReady">
+        <input v-model.trim="newItem.text" placeholder="text..." @keyup.enter="addItem('newItem','todos', newItem)">
+        <button @click="addItem('newItem','todos', newItem)">add</button>
+        <!-- <input v-model.trim="newTodoText" @keyup.enter="addTodo" placeholder="Add new Item"> -->
+        <ul>
+          <li v-for="todo in todos">
+            <span @click="ctxClick(todo, $event)">{{todo.text}}</span>
+            <!-- <input :value="todo.text" @input="updateTodoText(todo, $event.target.value)"> -->
+            <button @click="removeTodo(todo)">X</button>
+          </li>
+        </ul>    
+      </div>      
+    </div>
+    <div class="col-6">
+      <h3>tsorfiB</h3>
+      <div v-show="!fbReady">
+        <h1>loading firebase...</h1>
+      </div>
+      <div v-if="fbReady">
+        <h3>details - mode:{{detailMode}}</h3>
+        <div v-if="detailMode === 'default'">
+          <p>single click to inspect, double click to edit</p>
+        </div>
+        <div v-if="detailMode === 'inspect'">
+          <h3>inspecting</h3>
+          <ul class="v-for-object">
+            <li v-for="(value, key, index) in inspectItem">
+              -{{ index }}. {{ key }}: {{ value }}
+            </li>
+          </ul>
+        </div>
+        <div v-if="detailMode === 'edit' && editItem">
+          <h3>editing</h3>
+          <input v-model.trim="editItem.text" placeholder="text...">
+          <button @click="updateTodo('fbkey', editItem)">update</button>
+          <ul class="v-for-object">
+            <li v-for="(value, key, index) in editItem">
+              -{{ index }}. {{ key }}: {{ value }}
+            </li>
+          </ul>
+        </div>
+      </div>      
+    </div>
+  </div>
+  <div class="row">
+    
+    <div class="col-12">
+    <h2 class="flexresponsible-header">WarpCore</h2>
+  </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+<div spellcheck="false">
+  <div id="menu"></div>
+  <div id="tool">
+    <div id="toolpadding">
+      <div id="topdiv">
+        <h1>ui1</h1>
+        <h2>Find and Replace Text</h2>
+        <table>
+          <tbody>
+              <tr>
+                  <td class="pad-r">
+                      <span>Find this:</span>
+                      <div class="io-pane">
+                          <textarea id="find_this" class="io-textarea" wrap="off"></textarea>
+                      </div>
+                  </td>
+                  <td class="pad-l">
+                      <span>Replace with:</span>
+                      <div class="io-pane">
+                          <textarea id="replace_with" class="io-textarea" wrap="off"></textarea>
+                      </div>
+                  </td>
+              </tr>
+          </tbody>
+        </table>
+        <div class="control-pane">
+            <input type="button" class="buttn" value=" Find and Replace Text " onClick="if(document.getElementById('find_this').value!='') { replacetext();}" />
+            <input title="Case Sensitive" type="checkbox" id="case_sen" /><span>Case sensitive. Wrap is on</span>
+            <input type="radio" name="radbtn" id="wrapbtnl" onClick="wrapcontrol('soft');" />
+            <input type="radio" name="radbtn" id="wrapbtnr" onClick="wrapcontrol('off');" CHECKED /><span>off</span>
+            <input type="button" class="buttn" title="Select All Text" value=" S " onClick="SelectAll('input_output')" />
+            <input type="button" class="buttn" title="Clear All Text" value=" C " onClick="cleartext();" />
+            <span id="found"></span>
+        </div>
+      </div>
+      <div id="middiv">
+<textarea id="input_output" wrap="off">
+Enter your text to be found and replaced here.
+Enter text to be searched for in the "Find this:" text box above.
+Enter replacement text in the "Replace with:" text box above.
+Checking "Case sensitive." will make "Find this:" search case sensitive.
+Find and replace will function across line breaks.
+Privacy of Data: This tool is built-with and functions-in Client Side JavaScripting, so only your computer will see or process your data input/output.</textarea>
+      </div>
+      <div id="btmdiv">
+        <div id="footer"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    </div>
+  </div>
+
+
+
+  <div class="row">
+    <div class="col-2"></div>
+    <div class="col-10"></div>
+  </div>
+  <div class="row">
+    <div class="col-3"></div>
+    <div class="col-9"></div>
+  </div>
+  <div class="row">
+    <div class="col-4"></div>
+    <div class="col-8"></div>
+  </div>
+  <div class="row">
+    <div class="col-5"></div>
+    <div class="col-7"></div>
+  </div>
+  <div class="row">
+    <div class="col-6"></div>
+    <div class="col-6"></div>
+  </div>
+  <div class="row">
+    <div class="col-7"></div>
+    <div class="col-5"></div>
+  </div>
+  <div class="row">
+    <div class="col-8"></div>
+    <div class="col-4"></div>
+  </div>
+  <div class="row">
+    <div class="col-9"></div>
+    <div class="col-3"></div>
+  </div>
+  <div class="row">
+    <div class="col-10"></div>
+    <div class="col-2"></div>
+  </div>
+  <div class="row">
+    <div class="col-11"></div>
+    <div class="col-1"></div>
+  </div>
+  <div class="row">
+    <div class="col-1"></div>
+  </div>
+  <div class="row">
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+  </div>
+  <div class="row">
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+  </div>
+  <div class="row">
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+  </div>
+  <div class="row">
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+  </div>
+  <div class="row">
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+  </div>
+  <div class="row">
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+  </div>
+  <div class="row">
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+  </div>
+  <div class="row">
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+  </div>
+  <div class="row">
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+  </div>
+  <div class="row">
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+  </div>
+  <div class="row">
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+    <div class="col-1"></div>
+  </div>
+</div>   
+  </div>
+  </main>
+  <script src="/scripts/warpcore-find-and-replace-text.js"></script>
+  <% include ../partials/footer.ejs %>
+</body>
+</html>

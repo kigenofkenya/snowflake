@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+  <meta charset="UTF-8">
+  <title>Rehydrating pre-rendered html in Vue.js with Quench Vue</title>
+  
+  
+  
+      <link rel="stylesheet" href="stylesheets/quench-one.css">
+
+  
+</head>
+
+<body>
+<!-- qr data comes from script,q-data is rendered from server -->
+  <div id="app" class="pre-quench" q-convert-bindings q-r-data='{
+  "man": "bun",
+  "env": "ENV",
+  "port": "PORT",
+  "boolTrue": "boolTrue",
+  "boolFalse": "boolFalse",
+  "fooBar": "globalObj.foo",
+  "bazQux": "globalObj.baz",
+  "nonExistant": "sausage.dogs.are.cool",
+  "nonExistant2": "sausage"
+}' q-data='{
+  "boolTrue": true,
+  "boolFalse": false,
+  "counter": 0,
+  "jsonProp": "I am defined in the global data object so will take preference",
+  "loop": [
+    {
+      "property": "Vue"
+    },
+    {
+      "property": "JS"
+    },
+    {
+      "property": "rules!"
+    }
+  ],
+  "tags": [
+    "js",
+    "front-end",
+    "framework"
+  ],
+  "author": {
+    "firstName": "Matt",
+    "lastName": "Stow"
+  },
+  "skills": [
+    {
+      "name": "JS",
+      "level": 4
+    },
+    {
+      "name": "CSS",
+      "level": 5
+    }
+  ]}'>
+
+  <h2>Following paragraphs defined with q-r-data</h2>
+
+  <p q-binding="man"></p>
+  <p v-html="env"></p>
+  <p v-text="port + 10"></p>
+  <p v-text="fooBar"></p>
+  <p v-text="bazQux"></p>
+
+  <ul>
+    <li v-for="tag in tags">
+      <span q-binding="tag">js</span>
+    </li>
+    <!-- <q> -->
+    <li>
+      <span>library</span>
+    </li>
+    <!-- </q> -->
+  </ul>
+
+  <ul>
+    <li v-for="key in author">
+      <span q-binding="key">Matt</span>
+    </li>
+    <!-- <q> -->
+    <li>
+      <span>Stow</span>
+    </li>
+    <!-- </q> -->
+  </ul>
+
+  <ul>
+    <li v-for="skill in skills">
+      <span q-binding="skill.name">JS</span>
+      <span q-binding="skill.level">4</span>
+    </li>
+    <!-- <q> -->
+    <li>
+      <span>CSS</span>
+      <span>5</span>
+    </li>
+    <!-- </q> -->
+  </ul>
+
+  <h1 v-bind:title="counter" q-binding="title">Client-side hydrating</h1>
+  <p q-binding="simpleBinding">Simple binding</p>
+
+  <div class="u-visibility-hidden-when-pre-quench">
+    <label for="title-change">Change the title</label>
+    <input id="title-change" v-model="title">
+  </div>
+
+  <p q-binding="jsonProp">I will be overwritten when hydrated</p>
+
+  <!-- <q> -->
+  <p>My component</p>
+  <!-- </q> -->
+  <my-component message="is awesome"></my-component>
+
+  <span q-binding="counter"></span>
+  <button v-on:click="counter += 1" class="u-visibility-hidden-when-pre-quench">Add 1</button>
+
+  <li v-for="skill2 in skills2">
+    <span q-binding="skills2[0].name as skill2.name">JS</span>
+    <span q-binding="skills2[0].level as skill2.level">4</span>
+  </li>
+  <!-- <q> -->
+  <li>
+    <span q-binding="skills2[1].name as skill2.name">CSS</span>
+    <span q-binding="skills2[1].level as skill2.level">5</span>
+  </li>
+  <!-- </q> -->
+
+  <h2>Iterating over global data array</h2>
+  <ul>
+    <li v-for="item in loop" q-binding="item.property">Vue</li>
+    <!-- <q> -->
+    <li>JS</li>
+    <li>…</li>
+    <!-- </q> -->
+  </ul>
+
+  <h2>Iterating over inline array</h2>
+  <ol>
+    <li v-for="a in arr">
+      <span q-binding="arr[0] as a">Array 1</span>
+    </li>
+    <!-- <q> -->
+    <li>
+      <span q-binding="arr[1] as a">Array 2</span>
+    </li>
+    <li>
+      <span q-binding="arr[2] as a">Array 3</span>
+    </li>
+    <!-- </q> -->
+  </ol>
+
+  <h2>Iterating over inline objects</h2>
+  <ul>
+    <li v-for="value in obj">
+      <span q-binding="obj.honduras as value">John</span>
+    </li>
+    <!-- <q> -->
+    <li><span q-binding="obj.lastName as value">Doe</span></li>
+    <li><span q-binding="obj.age as value">30</span></li>
+    <!-- </q> -->
+  </ul>
+
+  <div v-if="todos.length">
+    <h2>Iterating over inline arrays of objects 1</h2>
+    <ol>
+      <li v-for="todo in todos">
+        <span q-binding="todos[0].text as todo.text">todo 1</span>,
+        <span q-binding="todos[0].text2 as todo.text2">key a</span>
+      </li>
+      <!-- <q> -->
+      <li>
+        <span q-binding="todos[1].text as todo.text">todo 2</span>,
+        <span q-binding="todos[1].text2 as todo.text2">key b</span>
+      </li>
+      <!-- </q> -->
+    </ol>
+
+    <button class="u-visibility-hidden-when-pre-quench" v-on:click="deleteTodo">Delete last todo</button>
+  </div>
+
+  <h2>Iterating over inline arrays of objects 2</h2>
+  <ol>
+    <li v-for="(name, index) in names">
+      <span q-binding="names[0].value  as  name.value">Matt</span>
+      <span q-binding="index"></span>
+    </li>
+    <!-- <q> -->
+    <li><span q-binding="names[1].value  as  name.value">Leesa</span></li>
+    <li><span q-binding="names[2].value  as  name.value">Charlotte</span></li>
+    <!-- </q> -->
+  </ol>
+
+  <button class="u-visibility-hidden-when-pre-quench" v-on:click="addName">Add random name</button>
+</div>
+  <script src='https://unpkg.com/vue'></script>
+<script src='https://unpkg.com/quench-vue/umd/quench-vue.min.js'></script>
+<script  src="scripts/quench-one.js"></script>
+
+
+
+
+</body>
+
+</html>
