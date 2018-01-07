@@ -1,23 +1,12 @@
 const express = require('express')
-const favicon = require('express-favicon')
 const path = require('path')
 const bodyParser = require('body-parser')
 const logger = require('morgan') // remove for production
-const appRoot = path.resolve(__dirname)
-const CONFIG= require(path.resolve(appRoot,'config','default'));
-const { SRV_PORT, APP_NAME } = CONFIG
-const PORT = process.env.PORT || SRV_PORT
-const qData= require(path.resolve(appRoot,'api','quench','q-data.js'));
-const qrData= require(path.resolve(appRoot,'api','quench','qr-data.js'));
+const PORT = process.env.PORT || 5000
 
 const app = express();
 // fixes
 app.disable('x-powered-by')
-app.locals.title = APP_NAME;
-// app.locals.strftime = require('strftime');
-app.locals.email = 'a.nzibo@gmail.com';
-app.locals.public =  path.resolve(appRoot, 'public')
-app.locals.ioBIN = path.resolve(appRoot,'ioBIN')
 // dev additions // should be conditined out for production
 app.use(logger('dev', {
   skip: () => app.get('env') === 'test'
@@ -26,26 +15,67 @@ app.use(logger('dev', {
 app
   .use(bodyParser.json())
   .use(bodyParser.urlencoded({ extended: false }))
-  .use(express.static(app.locals.public))
-  .use( favicon( path.join(app.locals.public,'favicon.ico') ) )
-  .use('/ioBIN', express.static(app.locals.ioBIN))
-  .set('views', path.join(appRoot, 'views'))
+  .use(express.static(path.join(__dirname, 'public')))
+  .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
 // ejs or pug? pug is simpler but ejs is more real
 // main app logic goes here, firebase,sockets,route objects for api usage, other render logic
 
-app.get('/scripts/main.js', (req, res) => {
-  res.sendFile(path.join(appRoot, 'client','main-static.js'))
-})
 
-
-app.get('/', (req, res) => {
-  res.render('pages/index', {
-    title: 'snowflake-x',
-    qrserved: qrData,
-    qserved: qData
-  })
-})
+let qRdata={
+  "man": "bun",
+  "env": "ENV",
+  "port": "PORT",
+  "boolTrue": "boolTrue",
+  "boolFalse": "boolFalse",
+  "fooBar": "globalObj.foo",
+  "bazQux": "globalObj.baz",
+  "nonExistant": "sausage.dogs.are.cool",
+  "nonExistant2": "sausage"
+}
+let qData={
+  "boolTrue": true,
+  "boolFalse": false,
+  "counter": 0,
+  "jsonProp": "I am defined in the global data object so will take preference",
+  "loop": [
+    {
+      "property": "Vue"
+    },
+    {
+      "property": "JS"
+    },
+    {
+      "property": "rules!"
+    }
+  ],
+  "tags": [
+    "js",
+    "front-end",
+    "framework"
+  ],
+  "author": {
+    "firstName": "Matt",
+    "lastName": "Stow"
+  },
+  "skills": [
+    {
+      "name": "JS",
+      "level": 4
+    },
+    {
+      "name": "CSS",
+      "level": 5
+    }
+  ]
+}
+  app.get('/', (req, res) => res.render('pages/index', {
+      title: 'StarkReef',
+      qrserved: qRdata,
+      qserved:qData
+      // qrserved: JSON.stringify(qRdata),
+      // qserved:JSON.stringify(qData)
+    }))
 // Error handler
 
 // ERROR HANDLING
@@ -62,6 +92,6 @@ app.use((req, res, next) => {
     });
 });
 
-const server = app.listen(PORT, () => {
-  console.log(`${app.locals.title} listening at port ${server.address().port}`);
-});
+
+
+  app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
