@@ -70,7 +70,7 @@ let qData={
   ]
 }
   app.get('/', (req, res) => res.render('pages/index', {
-      title: 'StarkReef',
+      title: 'snowflake-x',
       qrserved: qRdata,
       qserved:qData
       // qrserved: JSON.stringify(qRdata),
