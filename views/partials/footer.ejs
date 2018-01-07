@@ -1,15 +1,15 @@
 
 <!-- qr data comes from script,q-data is rendered from server -->
-  <footer id="q-continuum" class="pre-quench" q-convert-bindings q-r-data='<%- JSON.stringify(qrserved) %>' q-data='<%- JSON.stringify(qserved) %>'>
-
+<footer id="q-continuum" class="pre-quench" q-convert-bindings q-r-data='<%- JSON.stringify(qrserved) %>' q-data='<%- JSON.stringify(qserved) %>'>
   <h2>Following paragraphs defined with q-r-data</h2>
-
+  <h3>Q BINDINGS DIRECT/V-HTMLS TO VARIABLES IN SCRIPT</h3>
+  <p>these are interesting because they are defined by server references but the js variables are in the clientside script</p>
   <p q-binding="man"></p>
   <p v-html="env"></p>
   <p v-text="port + 10"></p>
   <p v-text="fooBar"></p>
   <p v-text="bazQux"></p>
-
+  <H3>TAGS-found in q-data</H3>
   <ul>
     <li v-for="tag in tags">
       <span q-binding="tag">js</span>
@@ -20,7 +20,6 @@
     </li>
     <!-- </q> -->
   </ul>
-
   <ul>
     <li v-for="key in author">
       <span q-binding="key">Matt</span>
@@ -31,7 +30,6 @@
     </li>
     <!-- </q> -->
   </ul>
-
   <ul>
     <li v-for="skill in skills">
       <span q-binding="skill.name">JS</span>
@@ -44,25 +42,20 @@
     </li>
     <!-- </q> -->
   </ul>
-
-  <h1 v-bind:title="counter" q-binding="title">Client-side hydrating</h1>
+  <p>the title here is defined inline, simple binding, that can be left to the express vue engine</p>
+  <h1 v-bind:title="counter" q-binding="title"><%=title%></h1>
   <p q-binding="simpleBinding">Simple binding</p>
-
   <div class="u-visibility-hidden-when-pre-quench">
     <label for="title-change">Change the title</label>
     <input id="title-change" v-model="title">
   </div>
-
   <p q-binding="jsonProp">I will be overwritten when hydrated</p>
-
   <!-- <q> -->
   <p>My component</p>
   <!-- </q> -->
   <my-component message="is awesome"></my-component>
-
   <span q-binding="counter"></span>
   <button v-on:click="counter += 1" class="u-visibility-hidden-when-pre-quench">Add 1</button>
-
   <li v-for="skill2 in skills2">
     <span q-binding="skills2[0].name as skill2.name">JS</span>
     <span q-binding="skills2[0].level as skill2.level">4</span>
@@ -73,7 +66,6 @@
     <span q-binding="skills2[1].level as skill2.level">5</span>
   </li>
   <!-- </q> -->
-
   <h2>Iterating over global data array</h2>
   <ul>
     <li v-for="item in loop" q-binding="item.property">Vue</li>
@@ -82,7 +74,6 @@
     <li>…</li>
     <!-- </q> -->
   </ul>
-
   <h2>Iterating over inline array</h2>
   <ol>
     <li v-for="a in arr">
@@ -97,7 +88,6 @@
     </li>
     <!-- </q> -->
   </ol>
-
   <h2>Iterating over inline objects</h2>
   <ul>
     <li v-for="value in obj">
@@ -108,7 +98,6 @@
     <li><span q-binding="obj.age as value">30</span></li>
     <!-- </q> -->
   </ul>
-
   <div v-if="todos.length">
     <h2>Iterating over inline arrays of objects 1</h2>
     <ol>
@@ -123,10 +112,8 @@
       </li>
       <!-- </q> -->
     </ol>
-
     <button class="u-visibility-hidden-when-pre-quench" v-on:click="deleteTodo">Delete last todo</button>
   </div>
-
   <h2>Iterating over inline arrays of objects 2</h2>
   <ol>
     <li v-for="(name, index) in names">
@@ -138,11 +125,15 @@
     <li><span q-binding="names[2].value  as  name.value">Charlotte</span></li>
     <!-- </q> -->
   </ol>
-
   <button class="u-visibility-hidden-when-pre-quench" v-on:click="addName">Add random name</button>
 </footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.min.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.13/vue.min.js"></script> -->
+<script src="https://unpkg.com/vue/dist/vue.min.js"></script>
+ <!-- -> It works !  -->
+<!-- <script src="https://unpkg.com/http-vue-loader@1.3.2"></script> -->
+ <!-- (newest version) -> it failed to load  -->
+<script src="https://unpkg.com/http-vue-loader"></script>
 <script src='https://unpkg.com/quench-vue/umd/quench-vue.min.js'></script>
 <!--  must load quench first to inform the rest of app-->
 <script src="/scripts/q-continuum.js"></script>

@@ -16,6 +16,8 @@ app
   .use(bodyParser.json())
   .use(bodyParser.urlencoded({ extended: false }))
   .use(express.static(path.join(__dirname, 'public')))
+
+  .use('/ioBIN', express.static(path.join(__dirname, 'ioBIN')))
   .set('views', path.join(__dirname, 'views'))
   .set('view engine', 'ejs')
 // ejs or pug? pug is simpler but ejs is more real
@@ -69,6 +71,10 @@ let qData={
     }
   ]
 }
+app.get('/scripts/main.js', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client','main-static.js'))
+})
+
   app.get('/', (req, res) => res.render('pages/index', {
       title: 'snowflake-x',
       qrserved: qRdata,
